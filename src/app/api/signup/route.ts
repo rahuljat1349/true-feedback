@@ -33,7 +33,6 @@ export async function POST(req: Request) {
     });
 
     if (existingUserByEmail) {
-     
       if (existingUserByEmail.isVerified) {
         return Response.json(
           {
@@ -49,10 +48,28 @@ export async function POST(req: Request) {
         existingUserByEmail.verifyCode = verifyCode;
         existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
         await existingUserByEmail.save();
+
+        const responseEmail = await sendVerificationEmail(
+          email,
+          username,
+          verifyCode
+        );
+
+        if (!responseEmail.success) {
+          Response.json(
+            {
+              success: false,
+              message: responseEmail.message,
+            },
+            { status: 500 }
+          );
+        }
+
         return NextResponse.json({
-          success:true,
-          message:"User alraedy exists. Hence, Updated."
-        })
+          success: true,
+          message:
+            "User alraedy exists. Hence, username and password updated and verify code sent to your email.",
+        });
       }
     }
 
@@ -82,7 +99,7 @@ export async function POST(req: Request) {
     );
 
     if (!responseEmail.success) {
-       Response.json(
+      Response.json(
         {
           success: false,
           message: responseEmail.message,
