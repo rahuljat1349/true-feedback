@@ -3,6 +3,7 @@ import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 
 import { sendVerificationEmail } from "@/helpers/sendEmail";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
     });
 
     if (existingUserByEmail) {
+     
       if (existingUserByEmail.isVerified) {
         return Response.json(
           {
@@ -43,9 +45,14 @@ export async function POST(req: Request) {
       } else {
         const hashedPassword = await bcrypt.hash(password, 10);
         existingUserByEmail.password = hashedPassword;
+        existingUserByEmail.username = username;
         existingUserByEmail.verifyCode = verifyCode;
         existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
         await existingUserByEmail.save();
+        return NextResponse.json({
+          success:true,
+          message:"User alraedy exists. Hence, Updated."
+        })
       }
     }
 
@@ -75,7 +82,7 @@ export async function POST(req: Request) {
     );
 
     if (!responseEmail.success) {
-      return Response.json(
+       Response.json(
         {
           success: false,
           message: responseEmail.message,
