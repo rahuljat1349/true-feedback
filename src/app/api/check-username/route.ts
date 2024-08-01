@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       return Response.json(
         {
           success: false,
-          message: "Ivalid username format",
+          message: usernameErrors,
           usernameErrors,
         },
         { status: 400 }
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
     return Response.json(
       {
         success: true,
-        message: "Username is available",
+        message: "Username is available ✔️",
       },
       { status: 200 }
     );
