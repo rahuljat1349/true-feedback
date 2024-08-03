@@ -25,8 +25,8 @@ import { Loader2 } from "lucide-react";
 
 const page = () => {
   const { toast } = useToast();
-
   const router = useRouter();
+  
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);

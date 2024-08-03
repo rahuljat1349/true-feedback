@@ -4,7 +4,7 @@ import {  useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 import { userSchema } from "@/schema/signUpSchema";
 import axios, { AxiosError } from "axios";
 import { ApiRespons } from "@/types/ApiResponse";
@@ -25,6 +25,7 @@ import { signIn } from "next-auth/react";
 
 const page = () => {
   const { toast } = useToast();
+  const router = useRouter();
 
 
 
@@ -56,8 +57,11 @@ const page = () => {
           variant:"destructive"
         })
       }
+      toast({
+        title: "Logged In successfully."
+      });
       
-      //  Router.push("/dashboard"); 
+      //  router.replace("/dashboard"); 
       
   } catch (error) {
     toast({

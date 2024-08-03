@@ -11,19 +11,21 @@ const Navbar = () => {
   return (
     <>
       <nav>
-        <div>
-          <a href="#">true feedback</a>
-          {session ? (
-            <>
-              {" "}
-              <span>Welcome, {user?.username || user?.email}</span>
-              <Button onClick={() => signOut()}>Logout</Button>
-            </>
-          ) : (
-            <Link href={"/signin"}>
-              <Button>Login</Button>
-            </Link>
-          )}
+        <div className="w-full flex justify-between items-center py-4 px-6 shadow-md bg-gray-100">
+          <a className="text-2xl font-bold " href="#">True Feedback</a>
+          <div>
+            {session ? (
+              <>
+                {" "}
+                <span className="mx-4">Welcome, {user?.username || user?.email}</span>
+                <Button onClick={() => signOut()}>Logout</Button>
+              </>
+            ) : (
+              <Link href={"/signin"}>
+                <Button>Login</Button>
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
     </>
